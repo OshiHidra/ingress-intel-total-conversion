@@ -362,12 +362,14 @@ window.renderPortal = function(ent) {
   }
 
   var team = getTeam(ent[2]);
-
+  var lvWeight = portalLevel / 1.5;
+  if (lvWeight < 2) lvWeight = 2;
+  var lvRadius = portalLevel + 3;
   var p = L.circleMarker(latlng, {
-    radius: 7,
+    radius: lvRadius,
     color: ent[0] == selectedPortal ? COLOR_SELECTED_PORTAL : COLORS[team],
     opacity: 1,
-    weight: 3,
+    weight: lvWeight,
     fillColor: COLORS[team],
     fillOpacity: 0.5,
     clickable: true,
