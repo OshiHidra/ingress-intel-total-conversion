@@ -113,6 +113,8 @@ var MAX_DRAWN_FIELDS = 200;
 var COLOR_SELECTED_PORTAL = '#f00';
 var COLORS = ['#FFCE00', '#0088FF', '#03FE03']; // none, res, enl
 var COLORS_LVL = ['#000', '#FECE5A', '#FFA630', '#FF7315', '#E40000', '#FD2992', '#EB26CD', '#C124E0', '#9627F4'];
+var COLORS_MOD = new Array();
+COLORS_MOD['VERY_RARE']='#F78AF6'; COLORS_MOD['RARE']='#AD8AFF'; COLORS_MOD['COMMON']='#84FBBD';
 // circles around a selected portal that show from where you can hack
 // it and how far the portal reaches (i.e. how far links may be made
 // from this portal)
@@ -1598,10 +1600,12 @@ window.getPortalDescriptionFromDetails = function(details) {
 window.getModDetails = function(d) {
   var mods = [];
   var modsTitle = [];
+  var modsColor = [];
   $.each(d.portalV2.linkedModArray, function(ind, mod) {
     if(!mod) {
       mods.push('');
       modsTitle.push('');
+      modsColor.push('#000');
     } else if(mod.type === 'RES_SHIELD') {
 
       var title = mod.rarity.capitalize() + ' ' + mod.displayName + '\n';
@@ -1613,18 +1617,20 @@ window.getModDetails = function(d) {
         title += '\n+' +  mod.stats[key] + ' ' + key.capitalize();
       }
 
+      modsColor.push(COLORS_MOD[mod.rarity]);
       mods.push(mod.rarity.capitalize().replace('_', ' ') + ' ' + mod.displayName);
       modsTitle.push(title);
     } else {
       mods.push(mod.type);
       modsTitle.push('Unknown mod. No further details available.');
+      modsColor.push('#FFF');
     }
   });
 
-  var t = '<span title="'+modsTitle[0]+'">'+mods[0]+'</span>'
-        + '<span title="'+modsTitle[1]+'">'+mods[1]+'</span>'
-        + '<span title="'+modsTitle[2]+'">'+mods[2]+'</span>'
-        + '<span title="'+modsTitle[3]+'">'+mods[3]+'</span>'
+  var t = '<span title="'+modsTitle[0]+'" style="color:'+modsColor[0]+'">'+mods[0]+'</span>'
+        + '<span title="'+modsTitle[1]+'" style="color:'+modsColor[1]+'">'+mods[1]+'</span>'
+        + '<span title="'+modsTitle[2]+'" style="color:'+modsColor[2]+'">'+mods[2]+'</span>'
+        + '<span title="'+modsTitle[3]+'" style="color:'+modsColor[3]+'">'+mods[3]+'</span>'
 
   return t;
 }
